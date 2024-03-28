@@ -180,6 +180,18 @@ header h1 {
     width: 70%;
 }
 
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    border: #EF4136 2px solid;
+    background: rgba(19, 19, 19, 0.5);
+    color: white;
+    text-align: center;
+}
+
+
 @media screen and (max-width: 640px) {
 
     body {
