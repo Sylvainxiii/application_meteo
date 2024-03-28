@@ -1,0 +1,193 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    background-image: url(img/clouds-4589586_1280.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "Noto Sans Display", sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin-bottom: 20px;
+    background: linear-gradient(0deg, rgba(19, 19, 19, 0) 0%, rgba(19, 19, 19, 1) 70%);
+    padding: 0px 8px 0px 8px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    overflow: auto;
+    border-radius: 10px;
+    margin: 0 8px 57px 8px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    padding: 5px 0 30px 0;
+    font-weight: 600;
+    color: white;
+}
+
+header h1 {
+    color: #FFD000;
+    border-bottom: solid 2px #FFD000;
+    margin: 10px 0 15px 0;
+}
+
+#recherche {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 50%;
+    background: #2f3640;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0;
+    margin: auto;
+    transition: 0.4s;
+}
+
+#rechercheville {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0 0 0 5px;
+    color: white;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 100%;
+}
+
+#btn {
+    color: white;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2f3640;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    padding: 2px;
+    border-top: solid 1px #949292;
+    border-left: solid 1px #949292;
+    border-bottom: solid 1px #181818;
+    border-right: solid 1px #181818;
+}
+
+#searchicon {
+    width: 80%;
+}
+
+.meteo_ville {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    border-top: #B1B0AE 1px solid;
+}
+
+.weathericon {
+    width: 40px;
+    padding: 5px;
+}
+
+.meteo_texte {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 70%;
+    padding-left: 5px;
+}
+
+.temperature {
+    margin: 0;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    font-size: x-large;
+    color: white;
+}
+
+.ville {
+    margin: 0;
+    font-weight: 500;
+    color: white;
+}
+
+.humidite_texte {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+}
+
+.humidite_titre {
+    margin: 0;
+    font-size: small;
+    font-style: italic;
+    color: white;
+}
+
+.humidite {
+    margin: 0;
+    font-weight: 500;
+    color: white;
+}
+
+.deleteButton {
+    color: white;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #EF4136;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    padding: 2px;
+    border-top: solid 1px #949292;
+    border-left: solid 1px #949292;
+    border-bottom: solid 1px #181818;
+    border-right: solid 1px #181818;
+}
+
+.deleteicon {
+    width: 70%;
+}
+
+@media screen and (max-width: 640px) {
+
+    body {
+        background-size: auto;
+    }
+
+    #recherche {
+        width: 80%;
+    }
+
+}
