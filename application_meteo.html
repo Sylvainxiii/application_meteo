@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Météo</title>
+    <link rel="stylesheet" href="style_application_meteo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Ma Météo</h1>
+        <div id='recherche'>
+            <input type="text" name="ville" id="rechercheville" placeholder="Search">
+            <div class="searchButton" id="btn"><img src="icon/searchwhite.svg" alt="Search" id="searchicon"></div>
+        </div>
+    </header>
+    <!-- <div class="modal visible">
+        <p>Voulez-vous supprimer la ville de</p>
+    </div> -->
+    <main id="corps">
+    </main>
+    <footer>
+        <div id="unite">°C/°F</div>
+    </footer>
+</body>
+<script src="application_meteo.js"></script>
+
+</html>
