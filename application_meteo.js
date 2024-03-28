@@ -1,5 +1,5 @@
 let container = document.getElementById('corps');
-let btn = document.getElementById('btn');
+let btn = document.getElementById('searchButton');
 let input_ville = document.getElementById('rechercheville');
 let liste_ville = []; //liste_ville est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
 if (localStorage.getItem('ville') !== null) { liste_ville = localStorage.getItem('ville').split(",") }; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
@@ -26,7 +26,7 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
                 "<div class='meteo_texte'><p class='temperature'>" + temperature + "</p><p class='ville'>"
                 + nom_propre_ville + "</p></div>" +
                 "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
-                + humidite + "</p></div><div class='deleteButton' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
+                + humidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
 
             // implemente localstorage si ajout d'une nouvelle ville via le formulaire
             if (nouvelle_ville == true) {

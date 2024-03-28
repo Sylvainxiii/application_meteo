@@ -77,22 +77,25 @@ header h1 {
     width: 100%;
 }
 
-#btn {
+.btn {
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    border-top: solid 1px #949292;
+    border-left: solid 1px #949292;
+    border-bottom: solid 1px #181818;
+    border-right: solid 1px #181818;
+}
+
+#searchButton {
     float: right;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     background: #2f3640;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.4s;
     padding: 2px;
-    border-top: solid 1px #949292;
-    border-left: solid 1px #949292;
-    border-bottom: solid 1px #181818;
-    border-right: solid 1px #181818;
 }
 
 #searchicon {
@@ -159,28 +162,24 @@ header h1 {
 }
 
 .deleteButton {
-    color: white;
     float: right;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     background: #EF4136;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.4s;
     padding: 2px;
-    border-top: solid 1px #949292;
-    border-left: solid 1px #949292;
-    border-bottom: solid 1px #181818;
-    border-right: solid 1px #181818;
 }
 
 .deleteicon {
     width: 70%;
 }
 
+
 .modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 50%;
     left: 10%;
@@ -191,6 +190,27 @@ header h1 {
     text-align: center;
 }
 
+#lineDeleteAction {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 40%;
+    margin: 15px;
+}
+
+#confirm {
+    border-radius: 8px;
+    background: #EF4136;
+    padding: 5px;
+}
+
+#cancel {
+    color: #2f3640;
+    border-radius: 8px;
+    background: #F5FAFB;
+    padding: 5px;
+}
 
 @media screen and (max-width: 640px) {
 
