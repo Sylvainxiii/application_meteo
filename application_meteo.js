@@ -80,7 +80,7 @@ container.addEventListener('click', function (event) {
         let deleteConfirm = document.getElementById('confirm');
         let deleteCancel = document.getElementById('cancel');
 
-        deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + ville_a_sup + "!";
+        deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + ville_a_sup + " ?";
 
         deleteConfirm.addEventListener('click', function () {
             liste_ville.splice(villeindex, 1);
