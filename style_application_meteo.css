@@ -82,11 +82,17 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.4s;
     border-top: solid 1px #949292;
     border-left: solid 1px #949292;
     border-bottom: solid 1px #181818;
     border-right: solid 1px #181818;
+}
+
+.btn:active {
+    border-top: solid 2px #181818;
+    border-left: solid 2px #181818;
+    border-bottom: solid 2px #949292;
+    border-right: solid 2px #949292;
 }
 
 #searchButton {
