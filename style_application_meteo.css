@@ -212,6 +212,10 @@ header h1 {
     padding: 5px;
 }
 
+.visible {
+    display: none;
+}
+
 @media screen and (max-width: 640px) {
 
     body {

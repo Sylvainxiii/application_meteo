@@ -1,5 +1,7 @@
 let container = document.getElementById('corps');
 let btn = document.getElementById('searchButton');
+let deleteValidation = document.getElementById('lineDeleteAction');
+
 let input_ville = document.getElementById('rechercheville');
 let liste_ville = []; //liste_ville est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
 if (localStorage.getItem('ville') !== null) { liste_ville = localStorage.getItem('ville').split(",") }; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
@@ -69,12 +71,27 @@ btn.addEventListener('click', function (event) {
 // supprime une ligne météo
 container.addEventListener('click', function (event) {
     let sup = event.target;
-    if (sup.parentNode.className == 'deleteButton') {
+    if (sup.className == 'deleteicon') {
         let ville_a_sup = sup.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
         let villeindex = liste_ville.indexOf(ville_a_sup);
-        liste_ville.splice(villeindex, 1);
-        localStorage.setItem('ville', liste_ville);
-        sup.parentNode.parentNode.remove();
+
+        deleteValidation.parentElement.classList.remove('visible');
+        let deletetext = document.getElementById('supTexte');
+        let deleteConfirm = document.getElementById('confirm');
+        let deleteCancel = document.getElementById('cancel');
+
+        deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + ville_a_sup + "!";
+
+        deleteConfirm.addEventListener('click', function () {
+            liste_ville.splice(villeindex, 1);
+            localStorage.setItem('ville', liste_ville);
+            sup.parentNode.parentNode.remove();
+            deleteValidation.parentElement.classList.add('visible');
+        })
+
+        deleteCancel.addEventListener('click', function () {
+            deleteValidation.parentElement.classList.add('visible');
+        })
 
     }
 
