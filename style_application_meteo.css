@@ -232,6 +232,10 @@ header h1 {
     display: none;
 }
 
+#unite {
+    cursor: default;
+}
+
 @media screen and (max-width: 640px) {
 
     body {

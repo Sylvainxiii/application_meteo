@@ -1,7 +1,9 @@
 let container = document.getElementById('corps');
 let btn = document.getElementById('searchButton');
 let deleteValidation = document.getElementById('lineDeleteAction');
-
+let unite = document.getElementById('unit');
+let tempvilleNode = document.getElementsByClassName('tempville');
+let tempunitNode = document.getElementsByClassName('tempunit');
 let input_ville = document.getElementById('rechercheville');
 let liste_ville = []; //liste_ville est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
 if (localStorage.getItem('ville') !== null) { liste_ville = localStorage.getItem('ville').split(",") }; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
@@ -17,7 +19,7 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
             ligne.classList.add('meteo_ville');
             ligne.setAttribute('id', nom_ville)
 
-            temperature = Math.round(data['main']['temp'] - 273.15) + "°C";
+            temperature = Math.round(data['main']['temp'] - 273.15);
             humidite = data['main']['humidity'] + "%";
             weather = data['weather']['0']['description'];
             icone = data['weather']['0']['icon'];
@@ -25,7 +27,7 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
             container.appendChild(ligne);
             ligne.innerHTML = "<img src='icon/" + icone + ".svg' alt='' class='weathericon'>" +
-                "<div class='meteo_texte'><p class='temperature'>" + temperature + "</p><p class='ville'>"
+                "<div class='meteo_texte'><p class='temperature'><span class='tempville'>" + temperature + "</span><span class='tempunit'>°C</span></p><p class='ville'>"
                 + nom_propre_ville + "</p></div>" +
                 "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
                 + humidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
@@ -97,4 +99,40 @@ container.addEventListener('click', function (event) {
 
 })
 
+// Convertion d'unité
+
+function celsiusToFarenheit(temperature) {
+    let temperatureF = Math.round((temperature * 9) / 5 + 32);
+    return temperatureF;
+}
+
+function farenheitToCelsius(temperature) {
+    let temperatureC = Math.round((temperature - 32) * 5 / 9);
+    return temperatureC;
+}
+
+unite.addEventListener('click', function () {
+    if (unite.textContent == "°C") {
+        for (let elmt in tempvilleNode) {
+            let tempC = tempvilleNode[elmt].textContent
+            let tempF = celsiusToFarenheit(tempC)
+            tempvilleNode[elmt].textContent = tempF
+        }
+        for (let elmt in tempunitNode) {
+            tempunitNode[elmt].textContent = '°F'
+        }
+        unite.textContent = '°F'
+    }
+    else {
+        for (let elmt in tempvilleNode) {
+            let tempC = tempvilleNode[elmt].textContent
+            let tempF = farenheitToCelsius(tempC)
+            tempvilleNode[elmt].textContent = tempF
+        }
+        for (let elmt in tempunitNode) {
+            tempunitNode[elmt].textContent = '°C'
+        }
+        unite.textContent = '°C'
+    }
+})
 
