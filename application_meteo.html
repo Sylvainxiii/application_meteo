@@ -18,16 +18,21 @@
         <h1>Ma Météo</h1>
         <div id='recherche'>
             <input type="text" name="ville" id="rechercheville" placeholder="Search">
-            <div class="searchButton" id="btn"><img src="icon/searchwhite.svg" alt="Search" id="searchicon"></div>
+            <div id="searchButton" class="btn"><img src="icon/searchwhite.svg" alt="Search" id="searchicon"></div>
         </div>
     </header>
-    <!-- <div class="modal visible">
-        <p>Voulez-vous supprimer la ville de</p>
-    </div> -->
+    <div class="modal visible">
+        <div id="supTexte"></div>
+        <div id="lineDeleteAction">
+            <div id="confirm" class="btn">Confirmer</div>
+            <div id="cancel" class="btn">Annuler</div>
+        </div>
+    </div>
+
     <main id="corps">
     </main>
     <footer>
-        <div id="unite">°C/°F</div>
+        <div id="unite"><span id="unitText">Unité: </span><span id="unit">°C</span></div>
     </footer>
 </body>
 <script src="application_meteo.js"></script>
