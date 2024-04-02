@@ -111,7 +111,7 @@ function farenheitToCelsius(temperature) {
     return temperatureC;
 }
 
-unite.addEventListener('click', function () {
+unite.parentNode.addEventListener('click', function () {
     if (unite.textContent == "°C") {
         for (let elmt in tempvilleNode) {
             let tempC = tempvilleNode[elmt].textContent
