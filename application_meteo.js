@@ -5,8 +5,13 @@ let unite = document.getElementById('unit');
 let tempvilleNode = document.getElementsByClassName('tempville');
 let tempunitNode = document.getElementsByClassName('tempunit');
 let input_ville = document.getElementById('rechercheville');
+let deleteConfirm = document.getElementById('confirm');
+let deleteCancel = document.getElementById('cancel');
+let ville_a_sup;
+let villeindex;
+let sup ;
 let liste_ville = []; //liste_ville est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
-if (localStorage.getItem('ville') !== null) { liste_ville = localStorage.getItem('ville').split(",") }; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
+if (localStorage.getItem('ville') !== null) { liste_ville = JSON.parse(localStorage.getItem('ville'))}; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
 let apikey = '967a9bd33d49966284cd4709635d0491';
 
 // récupération des données dans l'API openweather map
@@ -34,8 +39,8 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
             // implemente localstorage si ajout d'une nouvelle ville via le formulaire
             if (nouvelle_ville == true) {
-                (liste_ville == null) ? liste_ville = [nom_ville] : liste_ville.push(nom_ville);
-                localStorage.setItem('ville', liste_ville);
+                liste_ville.push(nom_ville);
+                localStorage.setItem('ville', JSON.stringify(liste_ville));
             }
 
         })
@@ -69,36 +74,39 @@ function ajoutVille(){
         alert('Veuillez saisir le nom d\'une ville');
     }
 }
+// supprime une ligne météo
+
+container.addEventListener('click', supVille)
 
 //supprime une ville
 function supVille (event) {
-    let sup = event.target;
+    sup = event.target;
     if (sup.className == 'deleteicon') {
-        let ville_a_sup = sup.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
-        let villeindex = liste_ville.indexOf(ville_a_sup);
+        ville_a_sup = sup.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
+        villeindex = liste_ville.indexOf(ville_a_sup);
 
         deleteValidation.parentElement.classList.remove('visible');
         let deletetext = document.getElementById('supTexte');
-        let deleteConfirm = document.getElementById('confirm');
-        let deleteCancel = document.getElementById('cancel');
-
         deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + ville_a_sup + " ?";
 
-        deleteConfirm.addEventListener('click', function () {
-            liste_ville.splice(villeindex, 1);
-            localStorage.setItem('ville', liste_ville);
-            sup.parentNode.parentNode.remove();
-            deleteValidation.parentElement.classList.add('visible');
-        })
-
-        deleteCancel.addEventListener('click', function () {
-            deleteValidation.parentElement.classList.add('visible');
-        })
     }
 }
-    
+
+deleteConfirm.addEventListener('click', function () {
+    liste_ville.splice(villeindex, 1);
+    localStorage.setItem('ville', JSON.stringify(liste_ville));
+    sup.parentNode.parentNode.remove();
+    deleteValidation.parentElement.classList.add('visible');
+})
+
+deleteCancel.addEventListener('click', function () {
+    deleteValidation.parentElement.classList.add('visible');
+})
+
 // Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
 document.onload=Chargement();
+
+
 
 // ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
 btn.addEventListener('click', ajoutVille)
@@ -109,8 +117,6 @@ input_ville.addEventListener('keypress', function(event){
     }
 })
 
-// supprime une ligne météo
-container.addEventListener('click', supVille)
 
 // Convertion d'unité
 
