@@ -104,7 +104,6 @@ document.onload=Chargement();
 btn.addEventListener('click', ajoutVille)
 
 input_ville.addEventListener('keypress', function(event){
-    console.log(event)
     if (event.key === "Enter"){
         ajoutVille()
     }
