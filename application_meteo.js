@@ -47,36 +47,31 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
 }
 
+//charge les villes présentes dans le local storage
 function Chargement(){
     if (liste_ville !== null) {
         for (i = 0; i < liste_ville.length; i++) {
             afficherMeteo(liste_ville[i]);
         }
     }}
+
+// ajoute une ville
+function ajoutVille(){
+    let nom_ville = input_ville.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
     
-    function ajoutVille(){
-        let nom_ville = input_ville.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
-        
-        if (nom_ville !== "") {
-            let existe = liste_ville.indexOf(nom_ville);
-            if (existe == -1) {
-                afficherMeteo(nom_ville, true);
-            }
-            
-        } else {
-            alert('Veuillez saisir le nom d\'une ville');
+    if (nom_ville !== "") {
+        let existe = liste_ville.indexOf(nom_ville);
+        if (existe == -1) {
+            afficherMeteo(nom_ville, true);
         }
+        
+    } else {
+        alert('Veuillez saisir le nom d\'une ville');
     }
-    
-    
-// Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
-document.onload=Chargement();
+}
 
-// ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
-btn.addEventListener('click', ajoutVille)
-
-// supprime une ligne météo
-container.addEventListener('click', function (event) {
+//supprime une ville
+function supVille (event) {
     let sup = event.target;
     if (sup.className == 'deleteicon') {
         let ville_a_sup = sup.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
@@ -99,10 +94,17 @@ container.addEventListener('click', function (event) {
         deleteCancel.addEventListener('click', function () {
             deleteValidation.parentElement.classList.add('visible');
         })
-
     }
+}
+    
+// Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
+document.onload=Chargement();
 
-})
+// ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
+btn.addEventListener('click', ajoutVille)
+
+// supprime une ligne météo
+container.addEventListener('click', supVille)
 
 // Convertion d'unité
 
