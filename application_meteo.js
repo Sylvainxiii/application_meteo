@@ -47,28 +47,33 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
 }
 
-// Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
-if (liste_ville !== null) {
-    for (i = 0; i < liste_ville.length; i++) {
-        afficherMeteo(liste_ville[i]);
+function Chargement(){
+    if (liste_ville !== null) {
+        for (i = 0; i < liste_ville.length; i++) {
+            afficherMeteo(liste_ville[i]);
+        }
+    }}
+    
+    function ajoutVille(){
+        let nom_ville = input_ville.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
+        
+        if (nom_ville !== "") {
+            let existe = liste_ville.indexOf(nom_ville);
+            if (existe == -1) {
+                afficherMeteo(nom_ville, true);
+            }
+            
+        } else {
+            alert('Veuillez saisir le nom d\'une ville');
+        }
     }
-}
+    
+    
+// Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
+document.onload=Chargement();
 
 // ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
-btn.addEventListener('click', function (event) {
-    event.preventDefault();
-    let nom_ville = input_ville.value.trim().toLowerCase(); //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
-
-    if (nom_ville !== "") {
-        let existe = liste_ville.indexOf(nom_ville);
-        if (existe == -1) {
-            afficherMeteo(nom_ville, true);
-        }
-
-    } else {
-        alert('Veuillez saisir le nom d\'une ville');
-    }
-})
+btn.addEventListener('click', ajoutVille)
 
 // supprime une ligne météo
 container.addEventListener('click', function (event) {
