@@ -1,17 +1,17 @@
 let container = document.getElementById('corps');
-let btn = document.getElementById('searchButton');
-let deleteValidation = document.getElementById('lineDeleteAction');
+let rechercheBtn = document.getElementById('searchButton');
+let supprimerValidation = document.getElementById('lineDeleteAction');
 let unite = document.getElementById('unit');
-let tempvilleNode = document.getElementsByClassName('tempville');
-let tempunitNode = document.getElementsByClassName('tempunit');
-let input_ville = document.getElementById('rechercheville');
-let deleteConfirm = document.getElementById('confirm');
-let deleteCancel = document.getElementById('cancel');
-let ville_a_sup;
-let villeindex;
-let sup ;
-let liste_ville = []; //liste_ville est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
-if (localStorage.getItem('ville') !== null) { liste_ville = JSON.parse(localStorage.getItem('ville'))}; // charge dans liste_ville le contenu de local storage, attention localstorage est un string et liste_ville un array
+let temperatureVilleNode = document.getElementsByClassName('tempville');
+let temperatureUnitNode = document.getElementsByClassName('tempunit');
+let inputVille = document.getElementById('rechercheville');
+let confirmerSupprimer = document.getElementById('confirm');
+let supprimerAnnule = document.getElementById('cancel');
+let villeASupprimer;
+let villeIndex;
+let supprimerBtn;
+let listeVille = []; //listeVille est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
+if (localStorage.getItem('ville') !== null) { listeVille = JSON.parse(localStorage.getItem('ville')) }; // charge dans listeVille le contenu de local storage, attention localstorage est un string et listeVille un array
 let apikey = '967a9bd33d49966284cd4709635d0491';
 
 // récupération des données dans l'API openweather map
@@ -39,8 +39,8 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
             // implemente localstorage si ajout d'une nouvelle ville via le formulaire
             if (nouvelle_ville == true) {
-                liste_ville.push(nom_ville);
-                localStorage.setItem('ville', JSON.stringify(liste_ville));
+                listeVille.push(nom_ville);
+                localStorage.setItem('ville', JSON.stringify(listeVille));
             }
 
         })
@@ -53,69 +53,85 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 }
 
 //charge les villes présentes dans le local storage
-function Chargement(){
-    if (liste_ville !== null) {
-        for (i = 0; i < liste_ville.length; i++) {
-            afficherMeteo(liste_ville[i]);
+function Chargement() {
+    if (listeVille !== null) {
+        for (i = 0; i < listeVille.length; i++) {
+            afficherMeteo(listeVille[i]);
         }
-    }}
+    }
+}
 
 // ajoute une ville
-function ajoutVille(){
-    let nom_ville = input_ville.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
-    
+function ajoutVille() {
+    let nom_ville = inputVille.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
+
     if (nom_ville !== "") {
-        let existe = liste_ville.indexOf(nom_ville);
+        let existe = listeVille.indexOf(nom_ville);
         if (existe == -1) {
             afficherMeteo(nom_ville, true);
         }
-        
+
     } else {
         alert('Veuillez saisir le nom d\'une ville');
     }
 }
-// supprime une ligne météo
-
-container.addEventListener('click', supVille)
 
 //supprime une ville
-function supVille (event) {
-    sup = event.target;
-    if (sup.className == 'deleteicon') {
-        ville_a_sup = sup.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
-        villeindex = liste_ville.indexOf(ville_a_sup);
+function supVille(event) {
+    supprimerBtn = event.target;
+    if (supprimerBtn.className == 'deleteicon') {
+        villeASupprimer = supprimerBtn.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
+        villeIndex = listeVille.indexOf(villeASupprimer);
 
-        deleteValidation.parentElement.classList.remove('visible');
+        supprimerValidation.parentElement.classList.remove('visible');
         let deletetext = document.getElementById('supTexte');
-        deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + ville_a_sup + " ?";
+        deletetext.textContent = 'Voulez-vous vraiment supprimer la ville de ' + villeASupprimer + " ?";
 
     }
 }
 
-deleteConfirm.addEventListener('click', function () {
-    liste_ville.splice(villeindex, 1);
-    localStorage.setItem('ville', JSON.stringify(liste_ville));
-    sup.parentNode.parentNode.remove();
-    deleteValidation.parentElement.classList.add('visible');
+
+
+
+confirmerSupprimer.addEventListener('click', function () {
+    listeVille.splice(villeIndex, 1);
+    localStorage.setItem('ville', JSON.stringify(listeVille));
+    supprimerBtn.parentNode.parentNode.remove();
+    supprimerValidation.parentElement.classList.add('visible');
 })
 
-deleteCancel.addEventListener('click', function () {
-    deleteValidation.parentElement.classList.add('visible');
+supprimerAnnule.addEventListener('click', function () {
+    supprimerValidation.parentElement.classList.add('visible');
 })
+
+
+// supprime une ligne météo
+
+container.addEventListener('click', supVille)
+
 
 // Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
-document.onload=Chargement();
+document.onload = Chargement();
 
 
 
 // ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
-btn.addEventListener('click', ajoutVille)
+rechercheBtn.addEventListener('click', ajoutVille)
 
-input_ville.addEventListener('keypress', function(event){
-    if (event.key === "Enter"){
+inputVille.addEventListener('keypress', function (event) {
+    if (event.key === "Enter") {
         ajoutVille()
     }
 })
+
+
+
+
+
+
+
+
+
 
 
 // Convertion d'unité
@@ -132,24 +148,24 @@ function farenheitToCelsius(temperature) {
 
 unite.parentNode.addEventListener('click', function () {
     if (unite.textContent == "°C") {
-        for (let elmt in tempvilleNode) {
-            let tempC = tempvilleNode[elmt].textContent
+        for (let elmt in temperatureVilleNode) {
+            let tempC = temperatureVilleNode[elmt].textContent
             let tempF = celsiusToFarenheit(tempC)
-            tempvilleNode[elmt].textContent = tempF
+            temperatureVilleNode[elmt].textContent = tempF
         }
-        for (let elmt in tempunitNode) {
-            tempunitNode[elmt].textContent = '°F'
+        for (let elmt in temperatureUnitNode) {
+            temperatureUnitNode[elmt].textContent = '°F'
         }
         unite.textContent = '°F'
     }
     else {
-        for (let elmt in tempvilleNode) {
-            let tempC = tempvilleNode[elmt].textContent
+        for (let elmt in temperatureVilleNode) {
+            let tempC = temperatureVilleNode[elmt].textContent
             let tempF = farenheitToCelsius(tempC)
-            tempvilleNode[elmt].textContent = tempF
+            temperatureVilleNode[elmt].textContent = tempF
         }
-        for (let elmt in tempunitNode) {
-            tempunitNode[elmt].textContent = '°C'
+        for (let elmt in temperatureUnitNode) {
+            temperatureUnitNode[elmt].textContent = '°C'
         }
         unite.textContent = '°C'
     }
