@@ -174,45 +174,37 @@ function suppressionVille(nomVille) {
     supprimerValidation.classList.add('visible');
 }
 
-
-
-
-
+//CONVERSION D'UNITES ENTRE LES °C ET LES °F----------------------------------------------------------------------------------------------------------------------------------------
 
 // Convertion d'unité
 
-function celsiusToFarenheit(temperature) {
+function celsiusToFarenheit(temperature, elmt) {
     let temperatureF = Math.round((temperature * 9) / 5 + 32);
-    return temperatureF;
+    elmt.textContent = temperatureF
+    elmt.parentNode.lastChild.textContent = '°F'
+    unite.textContent = '°F'
+    return true;
 }
 
-function farenheitToCelsius(temperature) {
+function farenheitToCelsius(temperature, elmt) {
     let temperatureC = Math.round((temperature - 32) * 5 / 9);
-    return temperatureC;
+    elmt.textContent = temperatureC
+    elmt.parentNode.lastChild.textContent = '°C'
+    unite.textContent = '°C'
+    return true;
 }
 
 unite.parentNode.addEventListener('click', function () {
-    if (unite.textContent == "°C") {
-        for (let elmt in temperatureVilleNode) {
-            let tempC = temperatureVilleNode[elmt].textContent
-            let tempF = celsiusToFarenheit(tempC)
-            temperatureVilleNode[elmt].textContent = tempF
+    for (let elmt in temperatureVilleNode) {
+        let temperatureelmt = temperatureVilleNode[elmt].textContent;
+        let uniteelmt = temperatureVilleNode[elmt].parentNode.lastChild.textContent;
+        if (uniteelmt == "°C") {
+            celsiusToFarenheit(temperatureelmt, temperatureVilleNode[elmt]);
+        } else {
+            farenheitToCelsius(temperatureelmt, temperatureVilleNode[elmt]);
         }
-        for (let elmt in temperatureUnitNode) {
-            temperatureUnitNode[elmt].textContent = '°F'
-        }
-        unite.textContent = '°F'
+
     }
-    else {
-        for (let elmt in temperatureVilleNode) {
-            let tempC = temperatureVilleNode[elmt].textContent
-            let tempF = farenheitToCelsius(tempC)
-            temperatureVilleNode[elmt].textContent = tempF
-        }
-        for (let elmt in temperatureUnitNode) {
-            temperatureUnitNode[elmt].textContent = '°C'
-        }
-        unite.textContent = '°C'
-    }
+
 })
 
