@@ -39,23 +39,6 @@ function afficherMeteo(nomVille, apikey, nouvelleVille = false) {
                 alert('Cette ville n\'existe pas!');
             }
         })
-
-}
-
-function creationDivVille(divParent, divNomVille, divIcone, divTemperature, divHumidite) {
-    nomPropreVille = divNomVille.charAt(0).toUpperCase() + divNomVille.slice(1); // Affiche le nom de la ville avec la première lettre en majuscule
-    //Création d'un nouvel élément
-    let ligne = document.createElement('div');
-    ligne.classList.add('meteo_ville');
-    ligne.setAttribute('id', divNomVille);
-    divParent.appendChild(ligne);
-    ligne.innerHTML = "<img src='icon/" + divIcone + ".svg' alt='' class='weathericon'>" +
-        "<div class='meteo_texte'><p class='temperature'><span class='tempville'>" + divTemperature + "</span><span class='tempunit'>°C</span></p><p class='ville'>"
-        + nomPropreVille + "</p></div>" +
-        "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
-        + divHumidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
-
-    return
 }
 
 function createUrl(nomVille, apikey) {
@@ -81,12 +64,25 @@ function implementLocalStorage(nomVille) {
     localStorage.setItem('ville', JSON.stringify(local));
     return true
 }
+function creationDivVille(divParent, divNomVille, divIcone, divTemperature, divHumidite) {
+    nomPropreVille = divNomVille.charAt(0).toUpperCase() + divNomVille.slice(1); // Affiche le nom de la ville avec la première lettre en majuscule
+    //Création d'un nouvel élément
+    let ligne = document.createElement('div');
+    ligne.classList.add('meteo_ville');
+    ligne.setAttribute('id', divNomVille);
+    divParent.appendChild(ligne);
+    ligne.innerHTML = "<img src='icon/" + divIcone + ".svg' alt='' class='weathericon'>" +
+        "<div class='meteo_texte'><p class='temperature'><span class='tempville'>" + divTemperature + "</span><span class='tempunit'>°C</span></p><p class='ville'>"
+        + nomPropreVille + "</p></div>" +
+        "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
+        + divHumidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
 
-
+    return
+}
 
 
 //charge les villes présentes dans le local storage
-function Chargement() {
+function Chargement(listeVille) {
     if (listeVille !== null) {
         for (i = 0; i < listeVille.length; i++) {
             afficherMeteo(listeVille[i], cleApi);
@@ -138,15 +134,10 @@ supprimerAnnule.addEventListener('click', function () {
 })
 
 
-// supprime une ligne météo
-
-container.addEventListener('click', supVille)
 
 
 // Affiche les données pour chaque ville stockées dans localstorage au démarrage de l'appli
-document.onload = Chargement();
-
-
+document.onload = Chargement(extractLocalStorage());
 
 // ajoute une ville lors du click du bouton search et implémente la liste de ville dans localstorage
 rechercheBtn.addEventListener('click', ajoutVille)
@@ -157,6 +148,9 @@ inputVille.addEventListener('keypress', function (event) {
     }
 })
 
+// supprime une ligne météo
+
+container.addEventListener('click', supVille)
 
 
 
