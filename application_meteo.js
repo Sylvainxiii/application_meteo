@@ -12,35 +12,25 @@ let villeIndex;
 let supprimerBtn;
 let listeVille = []; //listeVille est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
 if (localStorage.getItem('ville') !== null) { listeVille = JSON.parse(localStorage.getItem('ville')) }; // charge dans listeVille le contenu de local storage, attention localstorage est un string et listeVille un array
-let apikey = '967a9bd33d49966284cd4709635d0491';
+let cleApi = '967a9bd33d49966284cd4709635d0491';
 
 // récupération des données dans l'API openweather map
-function afficherMeteo(nom_ville, nouvelle_ville = false) {
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${nom_ville}&appid=${apikey}`;
+function afficherMeteo(nomVille, apikey, nouvelleVille = false) {
 
-    fetch(url).then(response => response.json())
+    fetch(createUrl(nomVille, apikey)).then(response => response.json())
         .then(data => {
-            let ligne = document.createElement('div');
-            ligne.classList.add('meteo_ville');
-            ligne.setAttribute('id', nom_ville)
 
+            //Récupération des données de L'api
             temperature = Math.round(data['main']['temp'] - 273.15);
             humidite = data['main']['humidity'] + "%";
             weather = data['weather']['0']['description'];
             icone = data['weather']['0']['icon'];
-            nom_propre_ville = nom_ville.charAt(0).toUpperCase() + nom_ville.slice(1) // Affiche le nom de la ville avec la première lettre en majuscule
 
-            container.appendChild(ligne);
-            ligne.innerHTML = "<img src='icon/" + icone + ".svg' alt='' class='weathericon'>" +
-                "<div class='meteo_texte'><p class='temperature'><span class='tempville'>" + temperature + "</span><span class='tempunit'>°C</span></p><p class='ville'>"
-                + nom_propre_ville + "</p></div>" +
-                "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
-                + humidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
+            creationDivVille(container, nomVille, icone, temperature, humidite);
 
             // implemente localstorage si ajout d'une nouvelle ville via le formulaire
-            if (nouvelle_ville == true) {
-                listeVille.push(nom_ville);
-                localStorage.setItem('ville', JSON.stringify(listeVille));
+            if (villeDansLocalStorage(nomVille) == false) {
+                implementLocalStorage(nomVille)
             }
 
         })
@@ -52,23 +42,66 @@ function afficherMeteo(nom_ville, nouvelle_ville = false) {
 
 }
 
+function creationDivVille(divParent, divNomVille, divIcone, divTemperature, divHumidite) {
+    nomPropreVille = divNomVille.charAt(0).toUpperCase() + divNomVille.slice(1); // Affiche le nom de la ville avec la première lettre en majuscule
+    //Création d'un nouvel élément
+    let ligne = document.createElement('div');
+    ligne.classList.add('meteo_ville');
+    ligne.setAttribute('id', divNomVille);
+    divParent.appendChild(ligne);
+    ligne.innerHTML = "<img src='icon/" + divIcone + ".svg' alt='' class='weathericon'>" +
+        "<div class='meteo_texte'><p class='temperature'><span class='tempville'>" + divTemperature + "</span><span class='tempunit'>°C</span></p><p class='ville'>"
+        + nomPropreVille + "</p></div>" +
+        "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
+        + divHumidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
+
+    return
+}
+
+function createUrl(nomVille, apikey) {
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${nomVille}&appid=${apikey}`;
+    return url
+}
+
+function extractLocalStorage() {
+    let listeVille = []; //listeVille est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
+    if (localStorage.getItem('ville') !== null) { listeVille = JSON.parse(localStorage.getItem('ville')) }; // charge dans listeVille le contenu de local storage, attention localstorage est un string et listeVille un array    
+
+    return listeVille
+}
+
+function villeDansLocalStorage(nomVille) {
+    extractLocalStorage();
+    return listeVille.includes(nomVille);
+}
+
+function implementLocalStorage(nomVille) {
+    local = extractLocalStorage();
+    local.push(nomVille);
+    localStorage.setItem('ville', JSON.stringify(local));
+    return true
+}
+
+
+
+
 //charge les villes présentes dans le local storage
 function Chargement() {
     if (listeVille !== null) {
         for (i = 0; i < listeVille.length; i++) {
-            afficherMeteo(listeVille[i]);
+            afficherMeteo(listeVille[i], cleApi);
         }
     }
 }
 
 // ajoute une ville
 function ajoutVille() {
-    let nom_ville = inputVille.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
+    let nomVille = inputVille.value.trim().toLowerCase();  //permet de mettre le nom rentré dans l'inoput toujours sous la même forme, evite les espaces en trop
 
-    if (nom_ville !== "") {
-        let existe = listeVille.indexOf(nom_ville);
+    if (nomVille !== "") {
+        let existe = listeVille.indexOf(nomVille);
         if (existe == -1) {
-            afficherMeteo(nom_ville, true);
+            afficherMeteo(nomVille, cleApi, true);
         }
 
     } else {
