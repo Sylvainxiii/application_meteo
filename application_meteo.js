@@ -31,12 +31,14 @@ function afficherMeteo(nomVille, apikey) {
             icone = data['weather']['0']['icon'];
 
             creationDivVille(container, nomVille, icone, temperature, humidite);
-
+            return;
         })
         .catch((error) => {
             if (error) {
                 alert('Cette ville n\'existe pas!');
+                return;
             }
+            return;
         })
 }
 
@@ -54,7 +56,7 @@ function creationDivVille(divParent, divNomVille, divIcone, divTemperature, divH
         "<div class='humidite_texte'><p class='humidite_titre'>Humidité:</p><p class='humidite'>"
         + divHumidite + "</p></div><div class='deleteButton btn' ><img src='icon/deletewhite.svg' alt='Sup' class='deleteicon'></div>";
 
-    return true
+    return true;
 }
 
 //OPERATIONS DANS LE LOCAL STORAGE--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ function extractLocalStorage() {
     let listeVille = []; //listeVille est un array qui stocke les noms des villes présentes dans local storage + celles qui sont ajoutées via la barre de recherche
     if (localStorage.getItem('ville') !== null) { listeVille = JSON.parse(localStorage.getItem('ville')) }; // charge dans listeVille le contenu de local storage, attention localstorage est un string et listeVille un array    
 
-    return listeVille
+    return listeVille;
 }
 
 function villeDansLocalStorage(nomVille) {
@@ -75,7 +77,7 @@ function implementLocalStorage(nomVille) {
     local = extractLocalStorage();
     local.push(nomVille);
     localStorage.setItem('ville', JSON.stringify(local));
-    return true
+    return true;
 }
 
 function supprimerDeLocalStorage(nomVille) {
@@ -83,7 +85,7 @@ function supprimerDeLocalStorage(nomVille) {
     let villeIndex = local.indexOf(nomVille);
     local.splice(villeIndex, 1);
     localStorage.setItem('ville', JSON.stringify(local));
-    return true
+    return true;
 }
 
 // ACTIONS AU CHARGEMENT DE LA PAGE-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -98,7 +100,7 @@ function Chargement(listeVille, apikey) {
             afficherMeteo(listeVille[i], apikey);
         }
     }
-    return true
+    return true;
 }
 
 //AJOUT D'UNE VILLE-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,7 +132,7 @@ function ajoutVille(inputVille, apikey) {
         alert('Veuillez saisir le nom d\'une ville');
     }
 
-    return true
+    return true;
 }
 
 //SUPPRESSION DES DONNEES METEO D'UNE VILLE----------------------------------------------------------------------------------------------------------------------------------------
@@ -148,7 +150,7 @@ function prepaSuppressionVille(event) {
         deletetext.innerHTML = 'Voulez-vous vraiment supprimer la ville de <span id = "spanvilleasup">' + villeASupprimer + "</span> ?"; //le span permet de stocker le nom de la ville pour pouvoir le récupérer lors de la confirmation
         return;
     }
-    return
+    return;
 }
 
 //Action suite au click du bouton "confirmer" de la modale de validation de suppression
@@ -172,6 +174,7 @@ function suppressionVille(nomVille) {
     let ligneASupprimer = document.getElementById(nomVille);
     ligneASupprimer.remove();
     supprimerValidation.classList.add('visible');
+    return true;
 }
 
 //CONVERSION D'UNITES ENTRE LES °C ET LES °F----------------------------------------------------------------------------------------------------------------------------------------
@@ -208,3 +211,42 @@ unite.parentNode.addEventListener('click', function () {
 
 })
 
+//SUPPRESSION DE LIGNE AVEC UN SWIPE LEFT------------------------------------------------------------------------------------------------------------
+
+function swipeDetect(el, callback) {
+
+    let touchsurface = el,
+        swipedir, //direction du swipe
+        startX, //positon de départ axe X
+        startY, //positon de départ axe Y
+        distX, //positon de départ axe X
+        distY, //positon de départ axe Y
+        minDistX = 150, //distance mini pour être considéré comme un swipe
+        maxDistY = 100, //distance maxi autorisée prependiculairement
+        handleswipe = callback;
+
+    touchsurface.addEventListener('touchstart', function (event) {
+        let touchobj = event.changedTouches[0];
+        swipedir = 'none'; //intialise la direction
+        startX = touchobj.pageX;
+        startY = touchobj.pageY;
+    })
+
+    touchsurface.addEventListener('touchend', function (event) {
+        let touchobj = event.changedTouches[0];
+
+        distX = touchobj.pageX - startX;
+        distY = touchobj.pageY - startY;
+
+        if (Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
+            swipedir = (distX < 0) ? 'left' : 'right';
+        } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
+            swipedir = (distY < 0) ? 'up' : 'down';
+        }
+        handleswipe(swipedir)
+    })
+}
+
+swipeDetect(container, function (swipedir) {
+    console.log(swipedir)
+})
