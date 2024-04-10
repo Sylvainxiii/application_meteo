@@ -213,41 +213,45 @@ unite.parentNode.addEventListener('click', function () {
 
 //SUPPRESSION DE LIGNE AVEC UN SWIPE LEFT------------------------------------------------------------------------------------------------------------
 
-function swipeDetect(el, callback) {
+// function swipeDetect(el, callback) {
 
-    let touchsurface = el,
-        target,
-        swipedir, //direction du swipe
-        startX, //positon de départ axe X
-        startY, //positon de départ axe Y
-        distX, //positon de départ axe X
-        distY, //positon de départ axe Y
-        minDistX = 150, //distance mini pour être considéré comme un swipe
-        maxDistY = 100; //distance maxi autorisée prependiculairement
+//     let touchsurface = el,
+//         target,
+//         swipedir, //direction du swipe
+//         startX, //positon de départ axe X
+//         startY, //positon de départ axe Y
+//         distX, //positon de départ axe X
+//         distY, //positon de départ axe Y
+//         minDistX = 150, //distance mini pour être considéré comme un swipe
+//         maxDistY = 100; //distance maxi autorisée prependiculairement
 
-    touchsurface.addEventListener('touchstart', function (event) {
-        target = event.target
-        let touchobj = event.changedTouches[0];
-        swipedir = 'none'; //intialise la direction
-        startX = touchobj.pageX;
-        startY = touchobj.pageY;
-    })
+//     touchsurface.addEventListener('touchstart', function (event) {
+//         target = event.target
+//         let touchobj = event.changedTouches[0];
+//         swipedir = 'none'; //intialise la direction
+//         startX = touchobj.pageX;
+//         startY = touchobj.pageY;
+//     })
 
-    touchsurface.addEventListener('touchend', function (event) {
-        let touchobj = event.changedTouches[0];
+//     touchsurface.addEventListener('touchend', function (event) {
+//         let touchobj = event.changedTouches[0];
 
-        distX = touchobj.pageX - startX;
-        distY = touchobj.pageY - startY;
+//         distX = touchobj.pageX - startX;
+//         distY = touchobj.pageY - startY;
 
-        if (Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
-            swipedir = (distX < 0) ? 'left' : 'right';
-        } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
-            swipedir = (distY < 0) ? 'up' : 'down';
-        }
-        callback(swipedir)
-    })
-}
+//         if (Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
+//             swipedir = (distX < 0) ? 'left' : 'right';
+//         } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
+//             swipedir = (distY < 0) ? 'up' : 'down';
+//         }
+//         callback(swipedir)
+//     })
+// }
 
+// swipeDetect(container, function (swipedir) {
+
+//     console.log(swipedir)
+// })
 
 
 function deleteTarget(touchelm) {
@@ -259,29 +263,29 @@ function deleteTarget(touchelm) {
     return i
 }
 
-
-swipeDetect(container, function (swipedir) {
-
-    console.log(swipedir)
-})
-
 function glissement(elm, startX) {
 
     elm.style.transition = "all 0s ";
-
+    let disX;
     elm.addEventListener('touchmove', function (event) {
+
         disX = startX - event.touches[0].pageX
         elmwidth = elm.offsetWidth;
         elmheight = elm.offsetHeight;
         elm.style.transform = "translateX(-" + disX + "px)"
-
     })
 
     elm.addEventListener('touchend', function (event) {
-        elm.style.transition = "all 0.5s ";
-        elm.style.transform = "translateX(0)"
-
+        if (disX > 200) {
+            elm.style.transform = "translateX(-105%)"
+            return action = "delete"
+        } else {
+            elm.style.transition = "all 0.5s ";
+            elm.style.transform = "translateX(0)"
+            return action = "cancel"
+        }
     })
+
 }
 
 document.addEventListener('touchstart', function (event) {
