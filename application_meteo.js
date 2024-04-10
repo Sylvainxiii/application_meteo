@@ -216,16 +216,17 @@ unite.parentNode.addEventListener('click', function () {
 function swipeDetect(el, callback) {
 
     let touchsurface = el,
+        target,
         swipedir, //direction du swipe
         startX, //positon de départ axe X
         startY, //positon de départ axe Y
         distX, //positon de départ axe X
         distY, //positon de départ axe Y
         minDistX = 150, //distance mini pour être considéré comme un swipe
-        maxDistY = 100, //distance maxi autorisée prependiculairement
-        handleswipe = callback;
+        maxDistY = 100; //distance maxi autorisée prependiculairement
 
     touchsurface.addEventListener('touchstart', function (event) {
+        target = event.target
         let touchobj = event.changedTouches[0];
         swipedir = 'none'; //intialise la direction
         startX = touchobj.pageX;
@@ -243,10 +244,19 @@ function swipeDetect(el, callback) {
         } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
             swipedir = (distY < 0) ? 'up' : 'down';
         }
-        handleswipe(swipedir)
+        callback(swipedir, target)
     })
 }
 
-swipeDetect(container, function (swipedir) {
-    console.log(swipedir)
+function deleteTarget(touchelm) {
+    let i = touchelm
+    do {
+        i = i.parentNode
+    } while (i === container)
+    return i
+}
+
+swipeDetect(container, function (swipedir, target) {
+
+    console.log(deleteTarget(target))
 })
