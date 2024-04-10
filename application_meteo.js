@@ -244,11 +244,14 @@ function swipeDetect(el, callback) {
         } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
             swipedir = (distY < 0) ? 'up' : 'down';
         }
-        callback(swipedir, target)
+        callback(swipedir)
     })
 }
 
+
+
 function deleteTarget(touchelm) {
+
     let i = touchelm
     do {
         i = i.parentNode
@@ -256,7 +259,35 @@ function deleteTarget(touchelm) {
     return i
 }
 
-swipeDetect(container, function (swipedir, target) {
 
-    console.log(deleteTarget(target))
+swipeDetect(container, function (swipedir) {
+
+    console.log(swipedir)
+})
+
+function glissement(elm, startX) {
+
+    elm.style.transition = "all 0s ";
+
+    elm.addEventListener('touchmove', function (event) {
+        disX = startX - event.touches[0].pageX
+        elmwidth = elm.offsetWidth;
+        elmheight = elm.offsetHeight;
+        elm.style.transform = "translateX(-" + disX + "px)"
+
+    })
+
+    elm.addEventListener('touchend', function (event) {
+        elm.style.transition = "all 0.5s ";
+        elm.style.transform = "translateX(0)"
+
+    })
+}
+
+document.addEventListener('touchstart', function (event) {
+    startX = event.changedTouches[0].pageX;
+    elm = deleteTarget(event.target)
+    if (elm.className == "meteo_ville") {
+        glissement(elm, startX);
+    }
 })
