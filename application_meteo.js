@@ -145,12 +145,16 @@ function prepaSuppressionVille(event) {
     let supprimerBtn = event.target;
     if (supprimerBtn.className == 'deleteicon') {
         let villeASupprimer = supprimerBtn.parentNode.parentNode.querySelector('.ville').textContent.toLowerCase();
-
-        supprimerValidation.classList.remove('visible');
-        deletetext.innerHTML = 'Voulez-vous vraiment supprimer la ville de <span id = "spanvilleasup">' + villeASupprimer + "</span> ?"; //le span permet de stocker le nom de la ville pour pouvoir le récupérer lors de la confirmation
-        return;
+        fenetreSuppression(villeASupprimer);
     }
     return;
+}
+
+//
+function fenetreSuppression(villeASupprimer) {
+    supprimerValidation.classList.remove('visible');
+    deletetext.innerHTML = 'Voulez-vous vraiment supprimer la ville de <span id = "spanvilleasup">' + villeASupprimer + "</span> ?"; //le span permet de stocker le nom de la ville pour pouvoir le récupérer lors de la confirmation
+    return villeASupprimer;
 }
 
 //Action suite au click du bouton "confirmer" de la modale de validation de suppression
@@ -165,6 +169,7 @@ supprimerAnnule.addEventListener('click', function () {
     let spanvilleasup = document.getElementById('spanvilleasup');
     spanvilleasup.textContent = ""; //purge le span du texte de la modale d'annulation de suppression pour éviter une erreur en cas de bug (car il sert de stockage pour la validation de suppression)
     supprimerValidation.classList.add('visible');
+    lignePosInit();
 })
 
 // Fonction qui finalise la suppression et purge le localstorage de la ville supprimée
@@ -213,45 +218,18 @@ unite.parentNode.addEventListener('click', function () {
 
 //SUPPRESSION DE LIGNE AVEC UN SWIPE LEFT------------------------------------------------------------------------------------------------------------
 
-// function swipeDetect(el, callback) {
-
-//     let touchsurface = el,
-//         target,
-//         swipedir, //direction du swipe
-//         startX, //positon de départ axe X
-//         startY, //positon de départ axe Y
-//         distX, //positon de départ axe X
-//         distY, //positon de départ axe Y
-//         minDistX = 150, //distance mini pour être considéré comme un swipe
-//         maxDistY = 100; //distance maxi autorisée prependiculairement
-
-//     touchsurface.addEventListener('touchstart', function (event) {
-//         target = event.target
-//         let touchobj = event.changedTouches[0];
-//         swipedir = 'none'; //intialise la direction
-//         startX = touchobj.pageX;
-//         startY = touchobj.pageY;
-//     })
-
-//     touchsurface.addEventListener('touchend', function (event) {
-//         let touchobj = event.changedTouches[0];
-
-//         distX = touchobj.pageX - startX;
-//         distY = touchobj.pageY - startY;
-
-//         if (Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
-//             swipedir = (distX < 0) ? 'left' : 'right';
-//         } else if (Math.abs(distY) >= minDistX && Math.abs(distX) <= maxDistY) {
-//             swipedir = (distY < 0) ? 'up' : 'down';
-//         }
-//         callback(swipedir)
-//     })
-// }
-
-// swipeDetect(container, function (swipedir) {
-
-//     console.log(swipedir)
-// })
+document.addEventListener('touchstart', function (event) {
+    let startX = event.changedTouches[0].pageX;
+    let elm = deleteTarget(event.target)
+    let villeASupprimer = elm.id
+    if (elm.className == "meteo_ville") {
+        glissement(elm, startX, function (action) {
+            if (action == 'delete') {
+                fenetreSuppression(villeASupprimer)
+            }
+        })
+    }
+})
 
 
 function deleteTarget(touchelm) {
@@ -263,7 +241,19 @@ function deleteTarget(touchelm) {
     return i
 }
 
-function glissement(elm, startX) {
+function lignePosInit() {
+    // debugger
+
+    let containercontent = container.childNodes
+    for (i = 1; i < containercontent.length; i++) {
+        containercontent[i].style.transition = "all 0.5s ";
+        containercontent[i].style.transform = "translateX(0)"
+    }
+
+
+}
+
+function glissement(elm, startX, callback) {
 
     elm.style.transition = "all 0s ";
     let disX;
@@ -278,20 +268,14 @@ function glissement(elm, startX) {
     elm.addEventListener('touchend', function (event) {
         if (disX > 200) {
             elm.style.transform = "translateX(-105%)"
-            return action = "delete"
+            action = "delete"
         } else {
             elm.style.transition = "all 0.5s ";
             elm.style.transform = "translateX(0)"
-            return action = "cancel"
+            action = "cancel"
         }
+        callback(action)
     })
 
 }
 
-document.addEventListener('touchstart', function (event) {
-    startX = event.changedTouches[0].pageX;
-    elm = deleteTarget(event.target)
-    if (elm.className == "meteo_ville") {
-        glissement(elm, startX);
-    }
-})
