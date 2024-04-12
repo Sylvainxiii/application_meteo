@@ -125,6 +125,7 @@ function ajoutVille(inputVille, apikey) {
     if (nomVille !== "") {
         if (villeDansLocalStorage(nomVille) == false) {
             afficherMeteo(nomVille, apikey);
+            //RAJOUTER LA GESTION DE L'ERREUR QUI IMPLEMENT QUAND MEME LE LOCALSTORAGE
             implementLocalStorage(nomVille);
         }
 
@@ -177,6 +178,8 @@ function suppressionVille(nomVille) {
     supprimerDeLocalStorage(nomVille);
 
     let ligneASupprimer = document.getElementById(nomVille);
+    debugger
+    remonteLigne(nomVille);
     ligneASupprimer.remove();
     supprimerValidation.classList.add('visible');
     return true;
@@ -231,7 +234,7 @@ document.addEventListener('touchstart', function (event) {
     }
 })
 
-
+// Permet de se positionner sur la div qui correspond à la ligne d'une ville peut importe l'élément interne qui est la cible du touchstart
 function deleteTarget(touchelm) {
 
     let i = touchelm
@@ -242,15 +245,18 @@ function deleteTarget(touchelm) {
 }
 
 function lignePosInit() {
-    // debugger
-
     let containercontent = container.childNodes
     for (i = 1; i < containercontent.length; i++) {
         containercontent[i].style.transition = "all 0.5s ";
         containercontent[i].style.transform = "translateX(0)"
     }
+}
 
+function remonteLigne(nomVille) {
 
+    let nextLigne = document.getElementById(nomVille).nextSibling
+    nextLigne.style.transition = "all 0.5s ";
+    nextLigne.style.transform = "translateY(0)"
 }
 
 function glissement(elm, startX, callback) {
@@ -259,14 +265,14 @@ function glissement(elm, startX, callback) {
     let disX;
     elm.addEventListener('touchmove', function (event) {
 
-        disX = startX - event.touches[0].pageX
+        disX = event.touches[0].pageX - startX;
         elmwidth = elm.offsetWidth;
         elmheight = elm.offsetHeight;
-        elm.style.transform = "translateX(-" + disX + "px)"
+        elm.style.transform = "translateX(" + disX + "px)"
     })
 
     elm.addEventListener('touchend', function (event) {
-        if (disX > 200) {
+        if (disX < -200) {
             elm.style.transform = "translateX(-105%)"
             action = "delete"
         } else {
