@@ -116,6 +116,7 @@ header h1 {
     width: 100%;
     padding: 10px 0 10px 0;
     border-top: #B1B0AE 1px solid;
+    transition: all 0s;
 }
 
 .weathericon {

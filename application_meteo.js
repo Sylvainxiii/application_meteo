@@ -178,7 +178,6 @@ function suppressionVille(nomVille) {
     supprimerDeLocalStorage(nomVille);
 
     let ligneASupprimer = document.getElementById(nomVille);
-    debugger
     remonteLigne(nomVille);
     ligneASupprimer.remove();
     supprimerValidation.classList.add('visible');
@@ -226,6 +225,7 @@ document.addEventListener('touchstart', function (event) {
     let elm = deleteTarget(event.target)
     let villeASupprimer = elm.id
     if (elm.className == "meteo_ville") {
+        elm.style.transitionDuration = "0s";
         glissement(elm, startX, function (action) {
             if (action == 'delete') {
                 fenetreSuppression(villeASupprimer)
@@ -247,21 +247,18 @@ function deleteTarget(touchelm) {
 function lignePosInit() {
     let containercontent = container.childNodes
     for (i = 1; i < containercontent.length; i++) {
-        containercontent[i].style.transition = "all 0.5s ";
         containercontent[i].style.transform = "translateX(0)"
     }
 }
 
 function remonteLigne(nomVille) {
 
-    let nextLigne = document.getElementById(nomVille).nextSibling
-    nextLigne.style.transition = "all 0.5s ";
-    nextLigne.style.transform = "translateY(0)"
+    let ligneSupprimee = document.getElementById(nomVille)
+
 }
 
 function glissement(elm, startX, callback) {
 
-    elm.style.transition = "all 0s ";
     let disX;
     elm.addEventListener('touchmove', function (event) {
 
@@ -273,10 +270,11 @@ function glissement(elm, startX, callback) {
 
     elm.addEventListener('touchend', function (event) {
         if (disX < -200) {
+            elm.style.transitionDuration = "0.5s";
             elm.style.transform = "translateX(-105%)"
             action = "delete"
         } else {
-            elm.style.transition = "all 0.5s ";
+            elm.style.transitionDuration = "0.5s";
             elm.style.transform = "translateX(0)"
             action = "cancel"
         }
