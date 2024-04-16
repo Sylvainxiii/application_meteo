@@ -31,6 +31,10 @@ function afficherMeteo(nomVille, apikey) {
             icone = data['weather']['0']['icon'];
 
             creationDivVille(container, nomVille, icone, temperature, humidite);
+            if (villeDansLocalStorage(nomVille) == false){
+                implementLocalStorage(nomVille)
+            }
+
             return;
         })
         .catch((error) => {
@@ -123,10 +127,9 @@ function ajoutVille(inputVille, apikey) {
     let nomVille = inputVille.value.trim().toLowerCase();
 
     if (nomVille !== "") {
-        if (villeDansLocalStorage(nomVille) == false) {
+        if (document.getElementById(nomVille) == null) {
             afficherMeteo(nomVille, apikey);
-            //RAJOUTER LA GESTION DE L'ERREUR QUI IMPLEMENT QUAND MEME LE LOCALSTORAGE
-            implementLocalStorage(nomVille);
+            
         }
 
     } else {
