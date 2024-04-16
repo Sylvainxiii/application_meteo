@@ -220,84 +220,46 @@ unite.parentNode.addEventListener('click', function () {
 
 //SUPPRESSION DE LIGNE AVEC UN SWIPE LEFT------------------------------------------------------------------------------------------------------------
 // V1
-// document.addEventListener('touchstart', function (event) {
-//     let startX = event.changedTouches[0].pageX;
-//     let elm = deleteTarget(event.target)
-//     let villeASupprimer = elm.id
-//     if (elm.className == "meteo_ville") {
-//         elm.style.transitionDuration = "0s";
-//         glissement(elm, startX, function (action) {
-//             if (action == 'delete') {
-//                 fenetreSuppression(villeASupprimer)
-//             }
-//         })
-//     }
-// })
+document.addEventListener('touchstart', function (event) {
+    let startX = event.changedTouches[0].pageX;
+    let elm = deleteTarget(event.target)
+    let villeASupprimer = elm.id
+    if (elm.className == "meteo_ville") {
+        elm.style.transitionDuration = "0s";
+        glissement(elm, startX, function (action) {
+            if (action == 'delete') {
+                fenetreSuppression(villeASupprimer)
+            }
+        })
+    }
+})
 
-// function glissement(elm, startX, callback) {
+function glissement(elm, startX, callback) {
     
-//     let disX;
-//     elm.addEventListener('touchmove', function (event) {
+    let disX;
+    elm.addEventListener('touchmove', function (event) {
         
-//         disX = event.touches[0].pageX - startX;
-//         elmwidth = elm.offsetWidth;
-//         elmheight = elm.offsetHeight;
-//         elm.style.transform = "translateX(" + disX + "px)"
-//     })
-    
-//     elm.addEventListener('touchend', function (event) {
-//         if (disX < -200) {
-//             elm.style.transitionDuration = "0.5s";
-//             elm.style.transform = "translateX(-105%)"
-//             action = "delete"
-//         } else {
-//             elm.style.transitionDuration = "0.5s";
-//             elm.style.transform = "translateX(0)"
-//             action = "cancel"
-//         }
-//         callback(action)
-//     })
-    
-// }
-
-//V2
-glissement()
-
-function glissement(){
-    // let startX,
-    // elm,
-    // villeASupprimer,
-    // disX,
-    // elmwidth,
-    // elmheight,
-    // action,
-    // stop = false;
-    let datastart = swipeStart(startX, elm, elmwidth, elmheight);
-    let datatMove = swipeMove(startX)
-    let dataend = swipeEnd(stop)
-
-}
-
-function swipeStart(startX, elm, elmwidth, elmheight){
-    document.addEventListener('touchstart', function (event) {
-        startX = event.changedTouches[0].pageX;
-        elm = deleteTarget(event.target)
+        disX = event.touches[0].pageX - startX;
         elmwidth = elm.offsetWidth;
         elmheight = elm.offsetHeight;
-    }
-)}
+        elm.style.transform = "translateX(" + disX + "px)"
+    })
+    
+    elm.addEventListener('touchend', function (event) {
+        if (disX < -200) {
+            elm.style.transitionDuration = "0.5s";
+            elm.style.transform = "translateX(-105%)"
+            action = "delete"
+        } else {
+            elm.style.transitionDuration = "0.5s";
+            elm.style.transform = "translateX(0)"
+            action = "cancel"
+        }
+        callback(action)
+    })
+    
+}
 
-function swipeMove(startX){
-    document.addEventListener('touchmove', function (event) {
-        disX = event.touches[0].pageX - startX;
-    }
-)}
-
-function swipeEnd(stop){
-    document.addEventListener('touchmove', function () {
-        stop = true
-    }
-)}
 
 // Permet de se positionner sur la div qui correspond à la ligne d'une ville peut importe l'élément interne qui est la cible du touchstart
 function deleteTarget(touchelm) {
