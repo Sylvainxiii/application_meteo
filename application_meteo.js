@@ -112,6 +112,7 @@ function Chargement(listeVille, apikey) {
 // ajoute une ville lors du click du bouton search
 rechercheBtn.addEventListener("click", function () {
     ajoutVille(barreDeRechercheVille, cleApi)
+
 });
 
 // ajoute une ville en appuyant sur le bouton "Entrée"
@@ -128,13 +129,17 @@ function ajoutVille(inputVille, apikey) {
 
     if (nomVille !== "") {
         if (document.getElementById(nomVille) == null) {
+            inputVille.value = ""
             afficherMeteo(nomVille, apikey);
-            
+        } else {
+            inputVille.value = ""
         }
 
     } else {
         alert('Veuillez saisir le nom d\'une ville');
     }
+
+
 
     return true;
 }
